@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 import manipulando_arquivos_diretorios.entities.Product;
 
-public class Program {
+public class ReadFormatWriteCsv {
 
 	public static void main(String[] args) throws ParseException {
 
