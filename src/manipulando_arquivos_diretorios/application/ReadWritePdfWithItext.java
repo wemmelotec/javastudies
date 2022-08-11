@@ -5,8 +5,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.stream.Stream;
 
 import com.itextpdf.text.BadElementException;
@@ -30,22 +32,43 @@ public class ReadWritePdfWithItext {
 	public static void main(String[] args)
 			throws DocumentException, MalformedURLException, IOException, URISyntaxException {
 
-		// insertTextInPdf();
+		// https://api.itextpdf.com/iText5/java/5.5.9/
+
+		insertTextInPdfFromTxt();
 		// insertImageInPdf();
-		//insertTableInPdf();
-		insertEncryptionInPdf();
+		// insertTableInPdf();
+		// insertEncryptionInPdf();
 
 	}
 
 	public static void insertTextInPdf() throws FileNotFoundException, DocumentException {
 		Document document = new Document();
+		// cria o escritor
 		PdfWriter.getInstance(document, new FileOutputStream("iTextHelloWorld.pdf"));
 
 		document.open();
 		Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
+		// criar uma parte significativa do texto com formatação
 		Chunk chunk = new Chunk("Hello World", font);
 
 		document.add(chunk);
+		document.close();
+	}
+
+	public static void insertTextInPdfFromTxt() throws DocumentException, IOException {
+		Document document = new Document();
+		PdfWriter.getInstance(document, new FileOutputStream("iTextHelloWorld.pdf"));
+
+		Path path = Paths.get("C:\\workspace\\eclipse\\javastudies\\tmp\\arquivo1.txt");
+		document.open();
+		Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
+
+		List<String> linhasArquivo = Files.readAllLines(path);
+		for (String linha : linhasArquivo) {
+			Chunk chunk = new Chunk(linha, font);
+			document.add(chunk);
+		}
+
 		document.close();
 	}
 
@@ -83,7 +106,7 @@ public class ReadWritePdfWithItext {
 		PdfReader pdfReader = new PdfReader("C:\\workspace\\eclipse\\javastudies\\iTextHelloWorld.pdf");
 		PdfStamper pdfStamper = new PdfStamper(pdfReader, new FileOutputStream("encryptedPdf.pdf"));
 
-		pdfStamper.setEncryption("userpass".getBytes(),"ownerpass".getBytes(), 0, PdfWriter.ENCRYPTION_AES_256);
+		pdfStamper.setEncryption("userpass".getBytes(), "ownerpass".getBytes(), 0, PdfWriter.ENCRYPTION_AES_256);
 
 		pdfStamper.close();
 	}

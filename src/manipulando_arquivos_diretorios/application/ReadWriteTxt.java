@@ -46,7 +46,7 @@ public class ReadWriteTxt {
 	 * }
 	 * 
 	 * Ler utilizando um Stream
-	 * Files.lines(path).forEach(System.out::println);
+	 * 
 	 */
 
 }
